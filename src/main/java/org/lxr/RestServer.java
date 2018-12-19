@@ -49,7 +49,7 @@ public class RestServer
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new HttpServerCodec());
                             ch.pipeline().addLast(new HttpObjectAggregator(65535));
-                            //ch.pipeline().addLast(new HttpRequestEncoder());
+                            ch.pipeline().addLast(new HttpRequestEncoder());
                             ch.pipeline().addLast(new HttpServerHandler());
                         }
                     });
