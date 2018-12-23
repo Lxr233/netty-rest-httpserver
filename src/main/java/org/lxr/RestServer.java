@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
+import org.lxr.rest.ControllerRegister;
 
 import java.net.InetSocketAddress;
 
@@ -26,6 +27,9 @@ public class RestServer
     }
 
     public static void main(String[] args) throws Exception{
+
+        new ControllerRegister().registerController("org.lxr.rest.controller");
+
         if(args.length!=1){
             System.err.println("Usage: "+ RestServer.class.getSimpleName()+"<port>");
             return;

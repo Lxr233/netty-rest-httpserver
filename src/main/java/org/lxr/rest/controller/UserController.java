@@ -1,4 +1,4 @@
-package org.lxr.controller;
+package org.lxr.rest.controller;
 
 import org.lxr.annotation.Get;
 import org.lxr.annotation.Path;
