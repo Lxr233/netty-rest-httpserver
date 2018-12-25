@@ -1,9 +1,10 @@
 package org.lxr.rest;
 
-import org.lxr.annotation.RestController;
+import org.lxr.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -21,6 +22,36 @@ public class ControllerRegister {
 
     public void registerController(String basePackage){
         Set<Class<?>> controllerClasses = findClassesByPackage(basePackage);
+        for(Class<?> clazz : controllerClasses){
+            registerClasses(clazz);
+        }
+    }
+
+    private void registerClasses(Class<?> clazz) {
+        StringBuilder path = new StringBuilder("");
+        if (clazz.getAnnotation(RequestPath.class) != null) {
+            RequestPath requestPath = clazz.getAnnotation(RequestPath.class);
+            path.append(requestPath.value());
+        }
+        Method[] methods = clazz.getMethods();
+        for(Method method : methods){
+            RequestMethodEnum requestMethodEnum = null;
+            if(method.getAnnotation(Get.class)!=null){
+                requestMethodEnum = RequestMethodEnum.GET;
+            }
+            else if(method.getAnnotation(Post.class)!=null){
+                requestMethodEnum = RequestMethodEnum.POST;
+            }
+            
+            if(method.getAnnotation(Path.class)!=null){
+                path.append(method.getAnnotation(Path.class).value());
+            }
+            
+            registerContext(requestMethodEnum,path,method);
+        }
+    }
+
+    private void registerContext(RequestMethodEnum requestMethodEnum, StringBuilder path, Method method) {
     }
 
     /**
