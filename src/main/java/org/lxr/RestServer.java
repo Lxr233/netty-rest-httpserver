@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
+import org.lxr.rest.ControllerContext;
 import org.lxr.rest.ControllerRegister;
 
 import java.net.InetSocketAddress;
@@ -32,6 +33,7 @@ public class RestServer
         }
         catch (Exception e){
             System.out.println(e.getMessage());
+            return;
         }
 
         if(args.length!=1){

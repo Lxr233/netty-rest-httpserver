@@ -25,19 +25,23 @@ public class ControllerRegister {
     }
 
     private void registerClasses(Class<?> clazz) throws Exception{
-        StringBuilder path = new StringBuilder("");
+        StringBuilder basePath = new StringBuilder();
         if (clazz.getAnnotation(RequestPath.class) != null) {
             RequestPath requestPath = clazz.getAnnotation(RequestPath.class);
-            path.append(requestPath.value());
+            basePath.append(requestPath.value());
         }
         Method[] methods = clazz.getMethods();
         for(Method method : methods){
-            RequestMethodEnum requestMethodEnum = null;
+            StringBuilder path = new StringBuilder(basePath);
+            RequestMethodEnum requestMethodEnum;
             if(method.getAnnotation(Get.class)!=null){
                 requestMethodEnum = RequestMethodEnum.GET;
             }
             else if(method.getAnnotation(Post.class)!=null){
                 requestMethodEnum = RequestMethodEnum.POST;
+            }
+            else {
+                continue;
             }
             
             if(method.getAnnotation(Path.class)!=null){
