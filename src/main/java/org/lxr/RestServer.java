@@ -27,8 +27,12 @@ public class RestServer
     }
 
     public static void main(String[] args) throws Exception{
-
-        new ControllerRegister().registerController("org.lxr.rest.controller");
+        try{
+            new ControllerRegister().registerController("org.lxr.rest.controller");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         if(args.length!=1){
             System.err.println("Usage: "+ RestServer.class.getSimpleName()+"<port>");

@@ -8,10 +8,7 @@ import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -20,14 +17,14 @@ import java.util.jar.JarFile;
  */
 public class ControllerRegister {
 
-    public void registerController(String basePackage){
+    public void registerController(String basePackage) throws Exception{
         Set<Class<?>> controllerClasses = findClassesByPackage(basePackage);
         for(Class<?> clazz : controllerClasses){
             registerClasses(clazz);
         }
     }
 
-    private void registerClasses(Class<?> clazz) {
+    private void registerClasses(Class<?> clazz) throws Exception{
         StringBuilder path = new StringBuilder("");
         if (clazz.getAnnotation(RequestPath.class) != null) {
             RequestPath requestPath = clazz.getAnnotation(RequestPath.class);
@@ -51,7 +48,25 @@ public class ControllerRegister {
         }
     }
 
-    private void registerContext(RequestMethodEnum requestMethodEnum, StringBuilder path, Method method) {
+    private void registerContext(RequestMethodEnum requestMethodEnum, StringBuilder path, Method method) throws Exception{
+        Map<RequestMethodEnum, Map<String, Method>> controllerCacheMap = ControllerContext.controllerCacheMap;
+        Map<String, Method> pathCacheMap = null;
+        if(!controllerCacheMap.containsKey(requestMethodEnum)){
+            pathCacheMap = new HashMap<>();
+            controllerCacheMap.put(requestMethodEnum,pathCacheMap);
+        }
+        else{
+            pathCacheMap = controllerCacheMap.get(requestMethodEnum);
+        }
+        /**
+         * 如果存在相同请求方法和相同路径的情况，则抛异常
+         */
+        if(pathCacheMap.containsKey(path.toString())){
+            throw new Exception("controller conflict");
+        }
+        else{
+            pathCacheMap.put(path.toString(),method);
+        }
     }
 
     /**
