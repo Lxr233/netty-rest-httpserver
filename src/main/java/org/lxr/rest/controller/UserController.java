@@ -16,6 +16,7 @@ public class UserController {
         userInfo.setAge(1);
         userInfo.setId(1);
         userInfo.setName("example");
+        System.out.println("invoke getUserInfo()");
         return userInfo;
     }
 }

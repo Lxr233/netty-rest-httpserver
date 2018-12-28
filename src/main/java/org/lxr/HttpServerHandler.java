@@ -1,8 +1,10 @@
 package org.lxr;
 
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
 import org.lxr.rest.RequestDispatcher;
 
 public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
@@ -25,7 +27,8 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 
 
 //        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-        new RequestDispatcher().doDispatcher(ctx,request);
+        HttpResponse response = new RequestDispatcher().doDispatcher(ctx,request);
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override

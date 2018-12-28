@@ -47,14 +47,17 @@ public class ControllerRegister {
             if(method.getAnnotation(Path.class)!=null){
                 path.append(method.getAnnotation(Path.class).value());
             }
-            
-            registerContext(requestMethodEnum,path,method);
+
+            ControllerInfo controllerInfo = new ControllerInfo();
+            controllerInfo.setClazz(clazz);
+            controllerInfo.setMethod(method);
+            registerContext(requestMethodEnum,path,controllerInfo);
         }
     }
 
-    private void registerContext(RequestMethodEnum requestMethodEnum, StringBuilder path, Method method) throws Exception{
-        Map<RequestMethodEnum, Map<String, Method>> controllerCacheMap = ControllerContext.controllerCacheMap;
-        Map<String, Method> pathCacheMap = null;
+    private void registerContext(RequestMethodEnum requestMethodEnum, StringBuilder path, ControllerInfo controllerInfo) throws Exception{
+        Map<RequestMethodEnum, Map<String, ControllerInfo>> controllerCacheMap = ControllerContext.controllerCacheMap;
+        Map<String, ControllerInfo> pathCacheMap = null;
         if(!controllerCacheMap.containsKey(requestMethodEnum)){
             pathCacheMap = new HashMap<>();
             controllerCacheMap.put(requestMethodEnum,pathCacheMap);
@@ -69,7 +72,7 @@ public class ControllerRegister {
             throw new Exception("controller conflict");
         }
         else{
-            pathCacheMap.put(path.toString(),method);
+            pathCacheMap.put(path.toString(),controllerInfo);
         }
     }
 

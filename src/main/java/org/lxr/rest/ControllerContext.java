@@ -1,6 +1,5 @@
 package org.lxr.rest;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,5 +11,5 @@ public class ControllerContext {
     /**
      * <请求方法,<请求路径,Controller对应的方法>>
      */
-    public static Map<RequestMethodEnum,Map<String, Method>> controllerCacheMap = new HashMap<>();
+    public static Map<RequestMethodEnum,Map<String, ControllerInfo>> controllerCacheMap = new HashMap<>();
 }
