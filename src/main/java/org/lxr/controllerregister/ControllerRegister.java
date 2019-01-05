@@ -1,6 +1,7 @@
-package org.lxr.rest;
+package org.lxr.controllerregister;
 
 import org.lxr.annotation.*;
+import org.lxr.rest.RequestMethodEnum;
 
 import java.io.File;
 import java.io.IOException;

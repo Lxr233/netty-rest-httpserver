@@ -1,4 +1,6 @@
-package org.lxr.rest;
+package org.lxr.controllerregister;
+
+import org.lxr.rest.RequestMethodEnum;
 
 import java.util.HashMap;
 import java.util.Map;

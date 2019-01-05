@@ -1,4 +1,4 @@
-package org.lxr.rest.controller;
+package org.lxr.controller;
 
 public class TestController {
 }

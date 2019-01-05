@@ -1,4 +1,4 @@
-package org.lxr.rest.controller;
+package org.lxr.controller;
 
 import org.lxr.annotation.Get;
 import org.lxr.annotation.Path;
@@ -9,6 +9,13 @@ import org.lxr.pojo.UserInfo;
 @RestController
 @RequestPath("/user")
 public class UserController {
+
+    @Get
+    @Path("/healthcheck")
+    public void healthCheck(){
+    }
+
+
     @Get
     @Path("/userinfo/example")
     public UserInfo getUserInfo(){

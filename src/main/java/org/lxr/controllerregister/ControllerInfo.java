@@ -1,4 +1,4 @@
-package org.lxr.rest;
+package org.lxr.controllerregister;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;

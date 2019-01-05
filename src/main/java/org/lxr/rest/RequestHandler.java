@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
+import org.lxr.controllerregister.ControllerInfo;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +17,7 @@ public class RequestHandler {
         try {
             Object instance = clazz.newInstance();
             Object returnObj = method.invoke(instance);
+            //如果方法返回值是void，则returnObj为null
             String returnMsg = JSON.toJSONString(returnObj);
             System.out.println("return:"+returnMsg);
             return makeResponse(request,returnMsg);

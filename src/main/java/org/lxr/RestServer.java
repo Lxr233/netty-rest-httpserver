@@ -10,8 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
-import org.lxr.rest.ControllerContext;
-import org.lxr.rest.ControllerRegister;
+import org.lxr.controllerregister.ControllerRegister;
 
 import java.net.InetSocketAddress;
 
@@ -29,7 +28,7 @@ public class RestServer
 
     public static void main(String[] args) throws Exception{
         try{
-            new ControllerRegister().registerController("org.lxr.rest.controller");
+            new ControllerRegister().registerController("org.lxr.controller");
         }
         catch (Exception e){
             System.out.println(e.getMessage());
