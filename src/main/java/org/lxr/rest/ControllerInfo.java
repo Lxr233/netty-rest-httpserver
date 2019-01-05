@@ -1,10 +1,20 @@
 package org.lxr.rest;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 public class ControllerInfo {
     private Method method;
     private Class<?> clazz;
+    private Type returnType;
+
+    public Type getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Type returnType) {
+        this.returnType = returnType;
+    }
 
     public Method getMethod() {
         return method;

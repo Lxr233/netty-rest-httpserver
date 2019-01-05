@@ -5,6 +5,7 @@ import org.lxr.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -48,11 +49,19 @@ public class ControllerRegister {
                 path.append(method.getAnnotation(Path.class).value());
             }
 
-            ControllerInfo controllerInfo = new ControllerInfo();
-            controllerInfo.setClazz(clazz);
-            controllerInfo.setMethod(method);
+            ControllerInfo controllerInfo = buildControllerInfo(clazz,method);
+
             registerContext(requestMethodEnum,path,controllerInfo);
         }
+    }
+
+    private ControllerInfo buildControllerInfo(Class<?> clazz, Method method) {
+        ControllerInfo controllerInfo = new ControllerInfo();
+        controllerInfo.setMethod(method);
+        controllerInfo.setClazz(clazz);
+        Type returnType = method.getGenericReturnType();
+        controllerInfo.setReturnType(returnType);
+        return controllerInfo;
     }
 
     private void registerContext(RequestMethodEnum requestMethodEnum, StringBuilder path, ControllerInfo controllerInfo) throws Exception{

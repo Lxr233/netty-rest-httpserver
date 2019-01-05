@@ -1,5 +1,8 @@
 package org.lxr.rest;
 
+import com.alibaba.fastjson.JSON;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,12 +15,21 @@ public class RequestHandler {
         Method method = controllerInfo.getMethod();
         try {
             Object instance = clazz.newInstance();
-            method.invoke(instance);
+            Object returnObj = method.invoke(instance);
+            String returnMsg = JSON.toJSONString(returnObj);
+            System.out.println("return:"+returnMsg);
+            return makeResponse(request,returnMsg);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
-        return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+    private HttpResponse makeResponse(FullHttpRequest request, String returnMsg) {
+        ByteBuf rspBuf = Unpooled.copiedBuffer(returnMsg.getBytes());
+        HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, rspBuf);
+        response.headers().set("Content-Type","text/json");
+        response.headers().set("Content-Lenght",rspBuf.readableBytes());
+        return response;
     }
 }
