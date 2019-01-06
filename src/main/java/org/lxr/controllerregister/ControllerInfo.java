@@ -7,6 +7,18 @@ public class ControllerInfo {
     private Method method;
     private Class<?> clazz;
     private Type returnType;
+    /**
+     * 一个方法的参数中只能有一个RequestBody注解
+     */
+    private Class<?> requestBody;
+
+    public Class<?> getRequestBody() {
+        return requestBody;
+    }
+
+    public void setRequestBody(Class<?> requestBody) {
+        this.requestBody = requestBody;
+    }
 
     public Type getReturnType() {
         return returnType;

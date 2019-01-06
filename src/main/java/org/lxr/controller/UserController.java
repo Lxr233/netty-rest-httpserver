@@ -1,9 +1,6 @@
 package org.lxr.controller;
 
-import org.lxr.annotation.Get;
-import org.lxr.annotation.Path;
-import org.lxr.annotation.RequestPath;
-import org.lxr.annotation.RestController;
+import org.lxr.annotation.*;
 import org.lxr.pojo.UserInfo;
 
 @RestController
@@ -24,6 +21,14 @@ public class UserController {
         userInfo.setId(1);
         userInfo.setName("example");
         System.out.println("invoke getUserInfo()");
+        return userInfo;
+    }
+
+    @Post
+    @Path("/userinfo/post")
+    public UserInfo setUserInfo(@RequestBody UserInfo userInfo){
+        System.out.println("invoke setUserInfo()");
+        userInfo.setId(userInfo.getId()+1);
         return userInfo;
     }
 }

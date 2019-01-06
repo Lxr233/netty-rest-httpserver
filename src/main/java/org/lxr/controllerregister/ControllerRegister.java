@@ -5,7 +5,9 @@ import org.lxr.rest.RequestMethodEnum;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -56,12 +58,36 @@ public class ControllerRegister {
         }
     }
 
-    private ControllerInfo buildControllerInfo(Class<?> clazz, Method method) {
+    private ControllerInfo buildControllerInfo(Class<?> clazz, Method method) throws Exception{
         ControllerInfo controllerInfo = new ControllerInfo();
         controllerInfo.setMethod(method);
         controllerInfo.setClazz(clazz);
+
         Type returnType = method.getGenericReturnType();
         controllerInfo.setReturnType(returnType);
+
+        /**
+         * 判断方法参数的注解
+         */
+        Annotation[][] paramAnnotations = method.getParameterAnnotations();
+        Class<?>[] paramTypes = method.getParameterTypes();
+        if(paramAnnotations != null && paramAnnotations.length != 0){
+            for(Annotation[] pramAnnotation : paramAnnotations){
+                for(int i=0;i<pramAnnotation.length;i++){
+                    if(pramAnnotation[i] instanceof RequestBody ){
+                        /**
+                         * 一个方法的参数中只能有一个RequestBody注解
+                         */
+                        if(controllerInfo.getRequestBody()!=null){
+                            throw new Exception("multiple requestBody");
+                        }
+                        controllerInfo.setRequestBody(paramTypes[i]);
+
+                    }
+                }
+            }
+        }
+
         return controllerInfo;
     }
 
